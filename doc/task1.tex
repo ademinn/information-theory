@@ -1,0 +1,137 @@
+\section{Задание 1}
+
+\subsection{Стационарное распределение вероятностей}
+
+Марковский источник $X$ задан матрицей переходных вероятностей 
+$$
+\Pi=
+\begin{pmatrix}
+\frac{3}{4} & \frac{1}{4} & 0 \\ 
+0 & \frac{1}{4} & \frac{3}{4} \\ 
+\frac{1}{4} & \frac{1}{4} & \frac{1}{2} \end{pmatrix}$$ 
+Полагаем, что процесс стационарный.
+Значит, существует стационарнарное распределение $p$, задаваемое матрицей $\Pi.$
+При этом $p$ является решением уравнения \begin{equation}\label{eq:peqpPi}p=p\Pi\end{equation}
+Найдем стационарнарное распределение для заданного источника.
+Для этого, используя уравнение \ref{eq:peqpPi}, составим систему:
+$$
+\begin{cases}
+\left( \begin{matrix} a & b & c \end{matrix} \right) =
+\begin{pmatrix}a & b & c \end{pmatrix}
+\begin{pmatrix}
+\frac{3}{4} & \frac{1}{4} & 0 \\
+0 & \frac{1}{4} & \frac{3}{4} \\
+\frac{1}{4} & \frac{1}{4} & \frac{1}{2}
+\end{pmatrix} \\
+a + b + c = 1
+\end{cases}
+$$
+Отсюда получаем:
+$$
+\begin{cases} 
+a = \frac{3}{4}a + \frac{1}{4}c \\
+b = \frac{1}{4}a + \frac{1}{4}b + \frac{1}{4}c\\
+a + b + c = 1
+\end{cases}
+$$
+Откуда находим стационарнарное распределение $p = \left( \frac{3}{8} ,\frac{1}{4} ,\frac{3}{8} \right).$
+
+\subsection{Энтропия источника}
+
+\subsubsection{$\mathbf{H(X)}$}
+Энтропия источника вычисляется по формуле $$H(X) = -\sum\limits_{i = 1} ^{3} p_i\log{p_i}$$ и равна: 
+$H(X) = -\frac{3}{8}\log{\frac{3}{8}} - \frac{1}{4}\log{\frac{1}{4}} - \frac{3}{8}\log{\frac{3}{8}} = \frac{1}{4} \cdot \left( 11 - 3\log{3}\right) = 1.561.$
+
+\subsubsection{$\mathbf{H(X|X^{\infty})}$}
+Полагаем, что заданный марковский источник связности 1.
+Тогда: $$H(X|X^{\infty}) = H(X|X)$$
+По определению условной энтропии: $$H(X|X)= \sum\limits_{i=1}^{3}{p_{i}{H(X|p_{i})}} = -\sum\limits_{i=1}^{3}{p_{i}\sum\limits_{j=1}^{3}{\pi_{ij}\log{\pi_{ij}}}}$$
+То есть $H(X|X^{\infty}) = -(\frac{3}{8}(\frac{3}{4}\log{\frac{3}{4}} + \frac{1}{4}\log{\frac{1}{4}}) +
+\frac{1}{4}(\frac{1}{4}\log{\frac{1}{4}} + \frac{3}{4}\log{\frac{3}{4}}) +
+\frac{3}{8}(\frac{1}{4}\log{\frac{1}{4}} + \frac{1}{4}\log{\frac{1}{4}} + \frac{1}{2}\log{\frac{1}{2}})) = \frac{29}{16} - \frac{15}{32}\log{3} = 1.07$.
+
+\subsubsection{$\mathbf{H_{2}(X)}$ и $\mathbf{H_{n}(X)}$}
+По определению: $$H_{n}(X) = \frac{H(X^n)}{n}$$
+По свойству 3 условной энтропии: $$H(X^n) = H(X) + H(X|X) + \ldots +H(X|X^{n - 1})$$
+Учитывая марковость и стационарность источника, получаем:
+$$H_{n}(X) = \frac{H(X) + (n - 1)H(X|X)}{n} = H(X|X) + \frac{1}{n}(H(X) - H(X|X))$$
+Значит $H_{n}(X) = (\frac{29}{16} - \frac{15}{32}\log{3}) + \frac{1}{n}(\frac{15}{16} - \frac{9}{32}\log{3}) = 1.07 + \frac{1}{n}0.492.$
+
+Исходя из общей формулы, находим, что $H_{2}(X) = 1.07 + \frac{1}{2} \cdot 0.492 = 1.316.$
+
+\subsection{Коды Хаффмена}
+
+\subsubsection{Код Хаффмена для $\mathbf{X}$}
+Построим код Хаффмена для $X$:
+
+$$
+\begin{tikzpicture}[frontier/.style={distance from root=250}, grow'=left]
+\tikzset{level distance=1.2in,sibling distance=.1in}
+\tikzset{edge from parent/.style= 
+            {draw},
+         every tree node/.style=
+            {draw,minimum width=0.2in,align=center}}
+\Tree[.1
+         [.$\frac{5}{8}$
+             [{{$c$} {$\frac{3}{8}$}\\код {$11$}} ]
+             [{{$b$} {$\frac{1}{4}$}\\код {$10$}} ] ]
+         [{{$a$} {$\frac{3}{8}$}\\код {$0$}} ] ]
+\end{tikzpicture}
+$$
+
+Посчитаем скорость кодирования: $\overline{R} = \overline{l} = 1 \cdot \frac{3}{8} + 2 \cdot \frac{1}{4} + 2 \cdot \frac{3}{8} = \frac{13}{8} = 1.625$
+
+Посчитаем избыточность: $ r = \overline{R} - H(X|X^{\infty}) = 1.625 - 1.07 = 0.555$ 
+
+\subsubsection{Код Хаффмена для $\mathbf{X^2}$}
+Построим код Хаффмена для $X^2$:
+$$
+\begin{tikzpicture}[frontier/.style={distance from root=350}, grow'=left]
+\tikzset{level distance=1in,sibling distance=.1in}
+\tikzset{edge from parent/.style= 
+            {draw},
+         every tree node/.style=
+            {draw,minimum width=0.2in,align=center}}
+\Tree[.1
+        [.$\frac{3}{8}$
+            [{{$cc$} {$\frac{3}{16}$}\\код {$11$}} ]
+            [.$\frac{3}{16}$
+                [{{$cb$} {$\frac{3}{32}$}\\код {$101$}} ]
+                [{{$ca$} {$\frac{3}{32}$}\\код {$100$}} ] ] ]
+        [.$\frac{5}{8}$
+            [.$\frac{11}{32}$
+                [{{$bc$} {$\frac{3}{16}$}\\код {$011$}} ]
+                [.$\frac{5}{32}$
+                    [{{$bb$} {$\frac{1}{16}$}\\код {$0101$}} ]
+                    [{{$ab$} {$\frac{3}{32}$}\\код {$0100$}} ] ] ]
+            [{{$aa$} {$\frac{9}{32}$}\\код {$00$}} ] ] ]
+\end{tikzpicture}
+$$
+
+Посчитаем скорость кодирования: $\overline{R} =\frac{1}{2}\overline{l} =
+\frac{1}{2}(2 \cdot \frac{9}{32} + 4 \cdot \frac{3}{32} + 4 \cdot \frac{1}{16} + 3 \cdot \frac{3}{16} + 3 \cdot \frac{3}{32} + 3 \cdot \frac{3}{32} + 2 \cdot \frac{3}{16}) = \frac{43}{32} = 1.344$
+
+Посчитаем избыточность: $ r = \overline{R} - H(X|X^{\infty}) = 1.344 - 1.07 = 0.274$
+
+\subsection{Наилучшее кодирование}
+
+Заметим, что кодирование по Маркову является оптимальным для данного источника. 
+
+
+\begin{tabular}{|c|c|c|c|}
+\hline
+    & A & B & C\\
+\hline
+a & 0 & 1 & {---}\\
+\hline
+b & {---} & 0 & 1\\
+\hline
+c & 00 & 01 & 1\\
+\hline
+средняя длина & $\frac{3}{2}$ & $\frac{4}{3}$ & 1\\
+\hline
+\end{tabular}
+
+Посчитаем скорость кодирования: $\overline{R} = \frac{3}{2} \cdot \frac{3}{8} + \frac{4}{3} \cdot \frac{1}{4} + 1 \cdot \frac{3}{8} = 1,27$
+
+Посчитаем избыточность: $ r = \overline{R} - H(X|X^{\infty}) = 1.27 - 1.07 = 0.2$ 
